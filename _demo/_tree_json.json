@@ -1,0 +1,9 @@
+[{"attr":{"id":"1206","isLast":"false","name":"CC Node"},
+				          "data":"CC Node",
+				         "metadata":{"id":"1206","isLast":"false","name":"CC Node"},
+				          "state":"closed"},
+			          {"attr":{"id":"1207","isLast":"true","name":"DD Node"},
+			          	"data":"DD Node",
+			          	"metadata":{"id":"1207","isLast":"true","name":"DD Node"},
+			          	"state":"close"}
+			         ]
