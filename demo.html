@@ -1,0 +1,83 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jsTree v.1.0 - Demo</title>
+	<script type="text/javascript" src="./_lib/jquery.js"></script>
+	<script type="text/javascript" src="./_lib/jquery.cookie.js"></script>
+	<script type="text/javascript" src="./_lib/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="./jquery.jstree.js"></script>
+	<link type="text/css" rel="stylesheet" href="./_docs/syntax/!style.css"/>
+	<link type="text/css" rel="stylesheet" href="./_docs/!style.css"/>
+	<script type="text/javascript" src="./_docs/syntax/!script.js"></script>
+</head>
+<body id="demo_body">
+<div id="container">
+
+<span id="integrate_demo"><h2>Integrate the usage of metadata, click the node event ,attrs,toggle nodes and ajax json</h2></span>
+<div id="description">
+<div id="jsonDemo" class="demo" style="height:120px;"></div>
+other usage refer to <a href="./_docs/index.html">documents</a>
+
+<script type="text/javascript" class="source below">
+$(function () {
+	$.ajaxSetup({cache:false});//ajax request don't use the cache
+$("#jsonDemo").jstree({ 
+		// List of active plugins
+		"plugins" : [ 
+			"themes","json_data", "ui"
+		],
+
+		// I usually configure the plugin that handles the data first
+		// This example uses JSON as it is most common
+		"json_data" : { 
+			"data" : [{"attr":{"id":"1204","isLast":"false","name":"A Node"},
+				          "data":"A Node",
+				         "metadata":{"id":"1204","isLast":"false","name":"A Node"},
+				          "state":"closed"},
+			          {"attr":{"id":"1205","isLast":"true","name":"B Node"},
+			          	"data":"B Node",
+			          	"metadata":{"id":"1205","isLast":"true","name":"B Node"},
+			          	"state":"close"}
+			         ],
+			"ajax" : { "url" : "./_demo/_tree_json.json",
+						     "data": function (n){
+	                            return{
+ 	                                //set the url request param,multi param separate by ,
+			                            "parentId" : n.attr ? n.attr("id") : "null",
+			                            "name":  n.attr ? n.attr("name") : "null"
+	                            };
+                        }
+			 }
+		},	
+	   "themes" : {
+	         "theme" : "classic", //apple,default,if in ie6 recommented you use classic
+	         "dots" : true,
+	         "icons" : true
+	   }
+	   
+	})
+	.bind("select_node.jstree",function(event,data){  
+			if("true" == data.rslt.obj.attr("isLast")){ 
+				 //get the attrs data you set in the attrs field;
+			    alert(data.rslt.obj.attr("id")+data.rslt.obj.attr("isLast"));
+			    //you can do something here...
+			}else{
+				//toggle node refer to the id setted in the metadata
+				//get the metadata id field value : jQuery.data(data.rslt.obj[0], "id")；
+				//The metadata id value should be different to each other !!!
+				//otherwise, the toggle_node will work incorrect !!!
+				$("#jsonDemo").jstree("toggle_node","#"+jQuery.data(data.rslt.obj[0], "id"));
+			}    
+    })
+    // prevent the default event of the link 
+	.delegate("a", "click", function (event, data) { event.preventDefault(); })
+	;
+});
+</script>
+</div>
+
+</body>
+</html>
