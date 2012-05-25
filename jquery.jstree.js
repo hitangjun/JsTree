@@ -2781,6 +2781,7 @@
 			two_state : false,
 			real_checkboxes : false,
 			checked_parent_open : true,
+			checked_self_open : false,
 			real_checkboxes_names : function (n) { return [ ("check_" + (n[0].id || Math.ceil(Math.random() * 10000))) , 1]; }
 		},
 		__destroy : function () {
@@ -2892,6 +2893,9 @@
 			check_node : function (obj) {
 				if(this.change_state(obj, false)) { 
 					obj = this._get_node(obj);
+					if(this._get_settings().checkbox.checked_self_open) {
+						this.open_node(obj, false, true);
+					}
 					if(this._get_settings().checkbox.checked_parent_open) {
 						var t = this;
 						obj.parents(".jstree-closed").each(function () { t.open_node(this, false, true); });
